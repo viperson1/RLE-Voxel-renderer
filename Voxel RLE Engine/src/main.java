@@ -9,7 +9,7 @@ public class main {
         double time = System.nanoTime();
         while(!glfwWindowShouldClose(engine.getWindow())) {
             engine.update();
-            glfwSetWindowTitle(engine.getWindow(), "" + engine.frameTime);
+            glfwSetWindowTitle(engine.getWindow(), "" + 1 / engine.frameTime);
             glFlush();
         }
         glfwTerminate();

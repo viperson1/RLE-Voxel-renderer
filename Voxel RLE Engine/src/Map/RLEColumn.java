@@ -2,7 +2,7 @@ package Map;
 
 public class RLEColumn {
 	private String column;
-	int maxHeight;
+	public int maxHeight;
 
 	public RLEColumn() {
 		column = "";

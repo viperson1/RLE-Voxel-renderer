@@ -24,8 +24,8 @@ public class Engine {
     
     public Engine() {
         windowWidth = 640; windowHeight = 360;
-        level = new Level(1024, 1024);
-        player = new Player(new Vector3f(512, 512, 1), new Vector3i(4, 4, 16), 0, 15);
+        level = new Level(512, 512);
+        player = new Player(new Vector3f(256, 256, level.getLevelArray()[256][256].maxHeight), new Vector3i(4, 4, 16), 0, 15);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
         
