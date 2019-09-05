@@ -3,9 +3,11 @@ package Map;
 public class RLEColumn {
 	private String column;
 	public int maxHeight;
+	public int[] palette;
 
 	public RLEColumn() {
 		column = "";
+		palette = new int[255];
 		//setSlab(0, 1, 1);
 	}
 	
@@ -15,7 +17,20 @@ public class RLEColumn {
 	
 	public String getColumnString() {return column; 			  }
 	
-	public void setSlab(int botHeight, int topHeight, int type) {
+	public void setSlab(int botHeight, int topHeight, int color) {
+		if(botHeight > topHeight) return;
+		int type = 0;
+		if(color != 0) {
+			type = 1;
+			for (int i = 0; i < 255; i++) {
+				if (palette[i] == color) type = i + 1;
+				if (palette[i] == 0) {
+					type = i + 1;
+					palette[i] = color;
+					break;
+				}
+			}
+		}
 		int currHeight = 0;
 		if(topHeight > maxHeight) maxHeight = topHeight;
 		

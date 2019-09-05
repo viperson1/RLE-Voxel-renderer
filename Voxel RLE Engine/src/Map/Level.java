@@ -3,6 +3,8 @@ package Map;
 import com.flowpowered.noise.module.source.Perlin;
 import org.joml.SimplexNoise;
 
+import java.awt.*;
+
 public class Level {
     private RLEColumn[][] level;
 	public Perlin noise;
@@ -22,7 +24,7 @@ public class Level {
                 if(cloudVal > 5) level[x][y].setSlab(150 - cloudVal, 150 + cloudVal, 1);
             }
         }*/
-        read3DArray(Generator.GenerateStackedPerlin(width, height, height));
+        read3DArray(Generator.GenerateStackedPerlin(width, height, 256));
     }
 
     public void read3DArray(boolean[][][] map) {
@@ -31,9 +33,16 @@ public class Level {
                 level[x][y] = new RLEColumn();
                 boolean last=false;
                 int switchHeight = 0;
+                
+                Color grassColor = new Color(0, 110 + (int)(noise.getValue(x * 0.1f, y * 0.1f, 100.4f) * 10), 0);
+                int grassHeight = (int)Math.abs(noise.getValue(x * 0.1f, y * 0.1f, -100.4f) * 4 + 1);
+                
                 for(int z = 0; z < map[0][0].length; z++) {
                     if(last != map[x][y][z]) {
-                        level[x][y].setSlab(switchHeight, z, (last) ? 1 : 0);
+                        if(last == true) {
+                            level[x][y].setSlab(switchHeight, z - grassHeight, Color.gray.getRGB());
+                            level[x][y].setSlab(z - grassHeight, z, grassColor.getRGB());
+                        }
                         switchHeight = z;
                     }
                     last = map[x][y][z];
