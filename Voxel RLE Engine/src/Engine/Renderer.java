@@ -1,19 +1,14 @@
 package Engine;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL.*;
 
 import Entity.Player;
 import Map.Level;
-import Map.SlabUtils;
-import com.flowpowered.noise.Noise;
-import com.flowpowered.noise.module.source.Perlin;
+import Map.RLEColumn;
 import org.joml.*;
 
 import java.awt.*;
 import java.lang.Math;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Renderer {
     Player player;
@@ -29,8 +24,8 @@ public class Renderer {
         this.level = level;
     
         this.FOV = (float) Math.PI * 0.5f;
-        this.columns = 360;
-        this.rows = 180;
+        this.columns = 320;
+        this.rows = 240;
     }
     
     public void renderFrame() {
@@ -86,57 +81,36 @@ public class Renderer {
                 if (currentSquare.x >= 0 && currentSquare.x < level.getWidth() && currentSquare.y >= 0 && currentSquare.y < level.getHeight()) {
                     int currentHeight = 0;
                     int lastHeight;
-                    String slabColumn = level.getLevelArray()[currentSquare.x][currentSquare.y].getColumnString();
+                    RLEColumn slabColumn = level.getLevelArray()[currentSquare.x][currentSquare.y];
                     
-                    int columnLength = slabColumn.length();
-                    for (int slabIndex = 0; slabIndex < columnLength; slabIndex++) {
-                        lastHeight = currentHeight;
-                        currentHeight += SlabUtils.getLength(slabColumn.charAt(slabIndex));
-            
-                        if(currentHeight < minZOnScreen || lastHeight > maxZOnScreen) continue;
-                        float heightDiffBot = (player.position.z + player.eyeHeight) - (lastHeight);
-                        float heightDiffTop = (player.position.z + player.eyeHeight) - (currentHeight);
+                    for (int slabIndex = slabColumn.getSlabIndex(minZOnScreen); slabIndex < slabColumn.getSlabIndex(maxZOnScreen); slabIndex++) {
+                        float heightDiffBot = (player.position.z + player.eyeHeight) - (RLEColumn.getBotHeight(slabColumn.getSlab(slabIndex)));
+                        float heightDiffTop = (player.position.z + player.eyeHeight) - (RLEColumn.getTopHeight(slabColumn.getSlab(slabIndex)));
                         
-                        if (SlabUtils.getType(slabColumn.charAt(slabIndex)) != 0) {//the part of the column we are looking at is not air.
-                            float botHeightOnScreen = ((1 - (heightDiffBot) / renderDist * heightScale + player.horizon) * recipScreenHeight);
-                            float topHeightOnScreen = ((1 - (heightDiffTop) / renderDist * heightScale + player.horizon) * recipScreenHeight);
-    
-                            
-    
-                            Color color = new Color(
-                                    level.getLevelArray()[currentSquare.x][currentSquare.y]
-                                    .palette[SlabUtils.getType(slabColumn.charAt(slabIndex)) - 1]);
-                            
-                            if(side == 0) color.darker();
-                            
-                            float bot =  Math.max(botHeightOnScreen, -1);
-                            float top = Math.min(topHeightOnScreen, 1);
-                            for (float i = bot; i < top; i += recipScreenHeight) {
-                                if (columnMask[(int) ((i * rows * .5) + (rows / 2))] == -1) {
-                                    glBegin(GL_QUADS);{
-                                        glColor3f(color.getRed() / 256f, color.getGreen() / 256f, color.getBlue() / 256f);
-                                        glVertex2f(horizontalScreenPoint, i);
-                                        glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, i);
-                                        glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, i + recipScreenHeight * 2);
-                                        glVertex2f(horizontalScreenPoint, i + recipScreenHeight * 2);
-                                    }glEnd();
-                                    columnMask[(int) ((i * rows * .5) + (rows / 2))] = (short) (((top - i) * rows * .5));
-                                }
-                                else {
-                                    i += recipScreenHeight * columnMask[(int) ((i * rows * .5) + (rows * .5))];
-                                }
-                            }
-                        }
+                        float botHeightOnScreen = ((1 - (heightDiffBot) / renderDist * heightScale + player.horizon) * recipScreenHeight);
+                        float topHeightOnScreen = ((1 - (heightDiffTop) / renderDist * heightScale + player.horizon) * recipScreenHeight);
+
+                        
+
+                        Color color = new Color(RLEColumn.getColor(slabColumn.getSlab(slabIndex)));
+                        
+                        if(side == 0) color.darker();
+                        
+                        float bot =  Math.max(botHeightOnScreen, -1);
+                        float top = Math.min(topHeightOnScreen, 1);
+                        glBegin(GL_QUADS); {
+                            glColor3f(color.getRed() / 256f, color.getGreen() / 256f, color.getBlue() / 256f);
+                            glVertex2f(horizontalScreenPoint, bot);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, bot);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, top);
+                            glVertex2f(horizontalScreenPoint, top);
+                        } glEnd();
                     }
                     if (side == 0) currentSquare.x += stepDir.x;
                     else currentSquare.y += stepDir.y;
                 } else inBounds = false;
             }
         }
-        glBegin(GL_LINES);
-            glVertex2f(-1, player.horizon * recipScreenHeight);
-            glVertex2f(1, player.horizon * recipScreenHeight);
-        glEnd();
     }
 
     private float distToNextInt(float num) {

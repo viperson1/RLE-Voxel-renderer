@@ -13,18 +13,18 @@ public class Level {
         level = new RLEColumn[width][height];
         noise = new Perlin();
         
-        /*for(int y = 0; y < height; y++) {
+        for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) {
-                
+                level[x][y] = new RLEColumn();
                 //hills
-                level[x][y].setSlab(0, (int)(Math.abs(noise.getValue(x * 0.001, y * 0.001, 0) * 50)), 1);
+                level[x][y].setSlab(0, (int)(Math.abs(noise.getValue(x * 0.001, y * 0.001, 0) * 50) + 50), Color.gray.getRGB(),1);
                 
                 //clouds
-				int cloudVal = (int)(noise.getValue(x * .01, y * 0.01, 50) * 30);
-                if(cloudVal > 5) level[x][y].setSlab(150 - cloudVal, 150 + cloudVal, 1);
+				//int cloudVal = (int)(noise.getValue(x * .01, y * 0.01, 50) * 30);
+                //if(cloudVal > 5) level[x][y].setSlab(150 - cloudVal, 150 + cloudVal, 1);
             }
-        }*/
-        read3DArray(Generator.GenerateStackedPerlin(width, height, 256));
+        }
+        //read3DArray(Generator.GenerateStackedPerlin(width, height, 256));
     }
 
     public void read3DArray(boolean[][][] map) {
@@ -40,8 +40,8 @@ public class Level {
                 for(int z = 0; z < map[0][0].length; z++) {
                     if(last != map[x][y][z]) {
                         if(last == true) {
-                            level[x][y].setSlab(switchHeight, z - grassHeight, Color.gray.getRGB());
-                            level[x][y].setSlab(z - grassHeight, z, grassColor.getRGB());
+                            level[x][y].setSlab(switchHeight, z - grassHeight, Color.gray.getRGB(), 1);
+                            level[x][y].setSlab(z - grassHeight, z, grassColor.getRGB(), 1);
                         }
                         switchHeight = z;
                     }

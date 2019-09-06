@@ -25,7 +25,7 @@ public class Engine {
     public Engine() {
         windowWidth = 640; windowHeight = 360;
         level = new Level(512, 512);
-        player = new Player(new Vector3f(256, 256, level.getLevelArray()[256][256].maxHeight), new Vector3i(4, 4, 16), 0, 15);
+        player = new Player(new Vector3f(256, 256, 100), new Vector3i(4, 4, 16), 0, 15);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
         
@@ -57,6 +57,7 @@ public class Engine {
 
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
+        glEnable(GL_DEPTH_TEST);
 
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
