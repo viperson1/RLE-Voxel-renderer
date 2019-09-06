@@ -30,7 +30,7 @@ public class Renderer {
     
     public void renderFrame() {
         glClearColor(0, 1, 1, 0);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         float recipScreenWidth = 2f / columns;
         float recipScreenHeight = 2f / rows;
         for(int column = 0; column < columns; column++) {
@@ -83,7 +83,8 @@ public class Renderer {
                     int lastHeight;
                     RLEColumn slabColumn = level.getLevelArray()[currentSquare.x][currentSquare.y];
                     
-                    for (int slabIndex = slabColumn.getSlabIndex(minZOnScreen); slabIndex < slabColumn.getSlabIndex(maxZOnScreen); slabIndex++) {
+                    int minIndex = slabColumn.getSlabIndex(minZOnScreen); int maxIndex = slabColumn.getSlabIndex(maxZOnScreen);
+                    for (int slabIndex = minIndex; slabIndex <= maxIndex; slabIndex++) {
                         float heightDiffBot = (player.position.z + player.eyeHeight) - (RLEColumn.getBotHeight(slabColumn.getSlab(slabIndex)));
                         float heightDiffTop = (player.position.z + player.eyeHeight) - (RLEColumn.getTopHeight(slabColumn.getSlab(slabIndex)));
                         
@@ -111,6 +112,10 @@ public class Renderer {
                 } else inBounds = false;
             }
         }
+        glBegin(GL_LINES);
+        glVertex2f(-1, player.horizon * recipScreenHeight);
+        glVertex2f(1, player.horizon * recipScreenHeight);
+        glEnd();
     }
 
     private float distToNextInt(float num) {

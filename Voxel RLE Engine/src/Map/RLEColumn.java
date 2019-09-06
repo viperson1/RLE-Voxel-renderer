@@ -90,7 +90,6 @@ public class RLEColumn {
 	
 	public int getSlabIndex(float z) {
 		int top = column.size(), bot = 0;
-		if(top < 2) return top;
 		int mid = (top + bot) / 2;
 		while(mid < top && mid > bot) {
 			if(z >= getBotHeight(column.get(mid))) {
@@ -98,10 +97,21 @@ public class RLEColumn {
 				else bot = mid;
 			}
 			else top = mid;
-			mid = bot + top / 2;
+			mid = (bot + top) / 2;
 		}
-		if(mid >= 0 && mid < column.size() && (z < getBotHeight(column.get(mid)) || z > getTopHeight(column.get(mid)))) return mid;
-		return -1;
+		try {
+			if(Math.abs(z - getTopHeight(mid)) > Math.abs(z - getBotHeight(mid + 1))) return mid + 1;
+			else return mid;
+		}
+		catch(IndexOutOfBoundsException e) {
+			try {
+				if(Math.abs(z - getBotHeight(mid)) < Math.abs(z - getTopHeight(mid - 1))) return mid - 1;
+				else return mid;
+			}
+			catch(IndexOutOfBoundsException g) {
+				return -1;
+			}
+		}
 	}
 	public static long createSlab(int color, int topHeight, int botHeight, int type) {
 		//A slab is a 64 bit value, the first 24 bits being a color, followed by a material type,
@@ -130,7 +140,7 @@ public class RLEColumn {
 		column.setSlab(20, 30, Color.white.getRGB(), 255);
 		column.setSlab(5, 15, Color.white.getRGB(), 255);
 		
-		System.out.println(column.getSlabIndex(32));
+		System.out.println(column.getSlabIndex(4));
 		
 		for(int i = 0; i < column.getColumnString().size(); i++) {
 			long slab = column.getColumnString().get(i);

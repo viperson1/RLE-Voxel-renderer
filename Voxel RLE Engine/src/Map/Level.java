@@ -20,8 +20,8 @@ public class Level {
                 level[x][y].setSlab(0, (int)(Math.abs(noise.getValue(x * 0.001, y * 0.001, 0) * 50) + 50), Color.gray.getRGB(),1);
                 
                 //clouds
-				//int cloudVal = (int)(noise.getValue(x * .01, y * 0.01, 50) * 30);
-                //if(cloudVal > 5) level[x][y].setSlab(150 - cloudVal, 150 + cloudVal, 1);
+				int cloudVal = (int)(noise.getValue(x * .01, y * 0.01, 50) * 30);
+                if(cloudVal > 5) level[x][y].setSlab(150 - cloudVal, 150 + cloudVal, Color.BLACK.getRGB(), 1);
             }
         }
         //read3DArray(Generator.GenerateStackedPerlin(width, height, 256));

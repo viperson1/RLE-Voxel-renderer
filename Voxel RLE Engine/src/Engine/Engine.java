@@ -58,7 +58,8 @@ public class Engine {
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
         glEnable(GL_DEPTH_TEST);
-
+        glDepthFunc(GL_NEVER);
+        
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
     
