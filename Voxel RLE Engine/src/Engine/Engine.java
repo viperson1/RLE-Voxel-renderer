@@ -11,6 +11,8 @@ import org.joml.Vector3i;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import java.awt.*;
+
 
 public class Engine {
     private Level level;
@@ -23,9 +25,9 @@ public class Engine {
 	private double lastTime;
     
     public Engine() {
-        windowWidth = 640; windowHeight = 360;
+        windowWidth = 960; windowHeight = 540;
         level = new Level(512, 512);
-        player = new Player(new Vector3f(256, 256, 100), new Vector3i(4, 4, 16), 0, 15);
+        player = new Player(new Vector3f(128, 128, 100), new Vector3i(1, 1, 2), 0, 2, this);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
         
@@ -35,15 +37,16 @@ public class Engine {
     public Player getPlayer()   { return player; }
     public Level getLevel()     { return level;  }
     public long getWindow()     { return window; }
+    public Renderer getRenderer(){return renderer; }
 
     void initializeWindow() {
         if(!glfwInit()) {
             throw new IllegalStateException("Failed to initialize GLFW");
         }
 
-        glfwWindowHint(GLFW_SAMPLES, 4);
+        //glfwWindowHint(GLFW_SAMPLES, 4);
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        //glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         window = glfwCreateWindow(windowWidth, windowHeight, "Window", 0, 0);
 
         if(window == 0) {
@@ -58,18 +61,33 @@ public class Engine {
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
         glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_NEVER);
-        
+        glDepthFunc(GL_LESS);
+
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
-    
+
+    int frame = 0;
+
     public void update() {
-        renderer.renderFrame();
+        renderer.renderFrame(++frame);
         frameTime = (System.nanoTime() - lastTime) / 1000000000f;
         lastTime = System.nanoTime();
 
+        glFlush();
+
         glfwPollEvents();
-        
+
+        double[][] cursorPos = new double[2][1];
+        glfwGetCursorPos(window, cursorPos[0], cursorPos[1]);
+
+        player.direction -= .0625 * (cursorPos[0][0] - (windowWidth / 2)) * frameTime;
+        player.horizon +=  9 * (cursorPos[1][0] - (windowHeight / 2)) * frameTime;
+        if(player.horizon > renderer.rows / 2) player.horizon = renderer.rows / 2;
+        if(player.horizon < renderer.rows / -2) player.horizon = renderer.rows / -2;
+
+
+        glfwSetCursorPos(window, windowWidth/2, windowHeight/2);
+
         if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
         if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -96,7 +114,27 @@ public class Engine {
 			player.position.z += frameTime * player.moveSpeed;
 		if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 			player.position.z -= frameTime * player.moveSpeed;
-		
-        glfwSwapBuffers(window);
+		if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+		    Vector3i rayHit = renderer.screenRayCast(64, player.direction, 0);
+		    if(rayHit != null) {
+                for (int x = rayHit.x - 2; x < rayHit.x + 3; x++) {
+                    for (int y = rayHit.y - 2; y < rayHit.y + 3; y++) {
+                        if(x < level.getWidth() && x >= 0 && y < level.getHeight() && y >= 0)
+                            level.getLevelArray()[level.getIndex(x, y)].setSlab(rayHit.z - 2, rayHit.z + 3, Color.green.getRGB(), 1);
+                    }
+                }
+            }
+        }
+        if(glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS || glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+            Vector3i rayHit = renderer.screenRayCast(64, player.direction, 0);
+            if(rayHit != null) {
+                for (int x = rayHit.x - 2; x < rayHit.x + 3; x++) {
+                    for (int y = rayHit.y - 2; y < rayHit.y + 3; y++) {
+                        if(x < level.getWidth() && x >= 0 && y < level.getHeight() && y >= 0)
+                            level.getLevelArray()[level.getIndex(x, y)].removeArea(rayHit.z - 2, rayHit.z + 3);
+                    }
+                }
+            }
+        }
     }
 }
