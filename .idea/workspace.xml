@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26e86c78-4a8f-447b-abd4-53046854eec4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/ComputeShader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Shaders/ComputeShaders/RenderShaders/RLERender.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Shaders/ComputeShaders/RenderShaders/RenderShader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/LWJGL_Libraries.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/LWJGL_Libraries.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Engine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Generator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Level.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/RLEColumn.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/RLEColumn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,11 +36,10 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Jackson\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine\lib" />
       <recent name="C:\Users\jacks\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine" />
     </key>
   </component>
@@ -129,8 +117,7 @@
       <workItem from="1568250731745" duration="6599000" />
       <workItem from="1568290428011" duration="28944000" />
       <workItem from="1568420942317" duration="857000" />
-      <workItem from="1568422303714" duration="19981000" />
-      <workItem from="1568516777106" duration="21371000" />
+      <workItem from="1568422303714" duration="20995000" />
     </task>
     <servers />
   </component>
@@ -151,9 +138,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$RLEColumn.ic" NAME="RLEColumn Coverage Results" MODIFIED="1568580175251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>Map.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$main.ic" NAME="main Coverage Results" MODIFIED="1568226525853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

@@ -22,7 +22,7 @@ public class Generator {
 
 		Random rand = new Random();
 
-		System.out.println(System.currentTimeMillis() / 1000f);
+		float time = System.currentTimeMillis() / 1000f;
 		for(int x = 0; x < width; x++)
 			for(int y = 0; y < length; y++)
 				for(int z = 0; z < height; z++) {
@@ -30,7 +30,7 @@ public class Generator {
 					boolean voxOn = ((z - 64) + noise.getValue(x * 0.01f, y * 0.01f, z * 0.005f) * 64)  - (getVoronoi(new Vector3f(x, y, z), 8, rand, vPointArr) * 4f * z / height) < noiseVal;
 					map[x][y][z] = voxOn;
 				}
-		System.out.println(System.currentTimeMillis() / 1000f);
+		System.out.println(time - (System.currentTimeMillis() / 1000f));
 		return map;
 	}
 

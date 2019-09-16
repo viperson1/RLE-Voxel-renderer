@@ -25,18 +25,20 @@ public class RLEColumn {
 		if(column.size() == 0) { column.add(createSlab(color, topHeight, botHeight, type)); return; }
 		
 		if(botHeight > topHeight) return;
-		
+
+		if(top > column.size()) top = column.size();
+
 		long insertSlab = createSlab(color, topHeight, botHeight, type);
 		
 		int mid = (top + bot) / 2;
 		
 		while(mid < top) {
-			if(botHeight > getTopHeight(column.get(mid))) {
+			if(botHeight >= getTopHeight(column.get(mid))) {
 				bot = mid;
 				if(mid == (top + bot) / 2) break;
 				mid = (top + bot) / 2; continue;
 			}
-			else if(topHeight < getBotHeight(column.get(mid))) {
+			else if(topHeight <= getBotHeight(column.get(mid))) {
 				top = mid;
 				if(mid == (top + bot) / 2) break;
 				mid = (top + bot) / 2; continue;
@@ -68,7 +70,7 @@ public class RLEColumn {
 					if(splitSlabBot != 0) column.set(mid, splitSlabBot); else {
 						column.remove(mid);
 					}
-					setSlab(botHeight, topHeight, color, type, ++bot, mid);
+					setSlab(botHeight, topHeight, color, type, mid, top);
 					return;
 				}
 			}
@@ -77,7 +79,7 @@ public class RLEColumn {
 				if(splitSlabTop != 0) column.set(mid, splitSlabTop); else {
 					column.remove(mid);
 				}
-				setSlab(botHeight, topHeight, color, type, mid, --top);
+				setSlab(botHeight, topHeight, color, type, bot, mid);
 				return;
 			}
 		}
@@ -98,12 +100,12 @@ public class RLEColumn {
 		int mid = (top + bot) / 2;
 		
 		while(mid < top) {
-			if(botHeight > getTopHeight(column.get(mid))) {
+			if(botHeight >= getTopHeight(column.get(mid))) {
 				bot = mid;
 				if(mid == (top + bot) / 2) break;
-				mid = (top + bot) / 2; if(mid == column.size() - 1) break; else continue;
+				mid = (top + bot) / 2; continue;
 			}
-			else if(topHeight < getBotHeight(column.get(mid))) {
+			else if(topHeight <= getBotHeight(column.get(mid))) {
 				top = mid;
 				if(mid == (top + bot) / 2) break;
 				mid = (top + bot) / 2; continue;
@@ -113,10 +115,6 @@ public class RLEColumn {
 			//due to the binary search, I know that I have found a slab that will overlap with my new slab.
 			int currSlabTopHeight = getTopHeight(currSlab);
 			int currSlabBotHeight = getBotHeight(currSlab);
-			
-			if(currSlabBotHeight >= botHeight && currSlabTopHeight <= topHeight) {
-				column.remove(mid); return;
-			}
 			
 			if(botHeight >= currSlabBotHeight) { //my new slab will overlap on the top of this slab, or fit entirely within.
 				long splitSlabBot = createSlab(getColor(currSlab), botHeight, currSlabBotHeight, getType(currSlab));
@@ -133,7 +131,7 @@ public class RLEColumn {
 					if(splitSlabBot != 0) column.set(mid, splitSlabBot); else {
 						column.remove(mid);
 					}
-					removeArea(botHeight, topHeight, ++mid, top);
+					removeArea(botHeight, topHeight, mid, top);
 					return;
 				}
 			}
@@ -142,7 +140,7 @@ public class RLEColumn {
 				if(splitSlabTop != 0) column.set(mid, splitSlabTop); else {
 					column.remove(mid);
 				}
-				if(mid < column.size() && getTopHeight(column.get(mid)) < topHeight) removeArea(botHeight, topHeight, bot, mid);
+				removeArea(botHeight, topHeight, bot, mid);
 				return;
 			}
 		}
@@ -207,9 +205,9 @@ public class RLEColumn {
 		RLEColumn column = new RLEColumn();
 		
 		column.setSlab(0, 1, 1000, 1);
-		column.setSlab(1, 50, 500, 1);
-		column.setSlab(50, 52, 1000, 1);
-		column.removeArea(48, 53);
+		column.setSlab(1, 19, 500, 1);
+		column.setSlab(18, 23, 1000, 1);
+		column.removeArea(18, 23);
 		
 		for(int i = 0; i < column.getColumnString().size(); i++) {
 			long slab = column.getColumnString().get(i);
