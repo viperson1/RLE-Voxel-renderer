@@ -44,9 +44,9 @@ public class Engine {
             throw new IllegalStateException("Failed to initialize GLFW");
         }
 
-        //glfwWindowHint(GLFW_SAMPLES, 4);
+        glfwWindowHint(GLFW_SAMPLES, 4);
         glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
-        //glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         window = glfwCreateWindow(windowWidth, windowHeight, "Window", 0, 0);
 
         if(window == 0) {

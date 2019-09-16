@@ -30,12 +30,16 @@ public class RLEColumn {
 		
 		int mid = (top + bot) / 2;
 		
-		while(mid < top && mid > bot) {
-			if(botHeight > getTopHeight(column.get(mid))) {		 bot = mid;}
-			else if(topHeight < getBotHeight(column.get(mid))) { top = mid;}
-			if(bot == mid || top == mid) {
-				mid = (top + bot) / 2;
-				continue;
+		while(mid < top) {
+			if(botHeight > getTopHeight(column.get(mid))) {
+				bot = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; continue;
+			}
+			else if(topHeight < getBotHeight(column.get(mid))) {
+				top = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; continue;
 			}
 			long currSlab = column.get(mid);
 			
@@ -62,18 +66,18 @@ public class RLEColumn {
 				}
 				else { //I want to change my current slab to be cut off by my new one, and search to find the one it overlaps with.
 					if(splitSlabBot != 0) column.set(mid, splitSlabBot); else {
-						column.remove(mid--); top--;
+						column.remove(mid);
 					}
-					setSlab(botHeight, topHeight, color, type, mid, top);
+					setSlab(botHeight, topHeight, color, type, ++bot, mid);
 					return;
 				}
 			}
 			else { //My new slab overlaps with this slab on the bottom.
 				long splitSlabTop = createSlab(getColor(currSlab), currSlabTopHeight, topHeight, getType(currSlab));
 				if(splitSlabTop != 0) column.set(mid, splitSlabTop); else {
-					column.remove(mid); mid--;
+					column.remove(mid);
 				}
-				setSlab(botHeight, topHeight, color, type, bot, mid);
+				setSlab(botHeight, topHeight, color, type, mid, --top);
 				return;
 			}
 		}
@@ -87,29 +91,39 @@ public class RLEColumn {
 	}
 
 	private void removeArea(int botHeight, int topHeight, int bot, int top) {
-		System.out.println("removing area");
-		if(botHeight >= topHeight || bot >= top) return;
-
+		if(column.size() == 0) return;
+		if(botHeight > topHeight) return;
+		if(top > column.size()) top = column.size();
+		
 		int mid = (top + bot) / 2;
-
-		while(mid < top && mid > bot) {
-			if(botHeight > getTopHeight(column.get(mid))) {		 bot = mid;}
-			else if(topHeight < getBotHeight(column.get(mid))) { top = mid;}
-			if(bot == mid || top == mid) {
-				mid = (top + bot) / 2;
-				continue;
+		
+		while(mid < top) {
+			if(botHeight > getTopHeight(column.get(mid))) {
+				bot = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; if(mid == column.size() - 1) break; else continue;
+			}
+			else if(topHeight < getBotHeight(column.get(mid))) {
+				top = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; continue;
 			}
 			long currSlab = column.get(mid);
-
+			
 			//due to the binary search, I know that I have found a slab that will overlap with my new slab.
 			int currSlabTopHeight = getTopHeight(currSlab);
 			int currSlabBotHeight = getBotHeight(currSlab);
-
+			
+			if(currSlabBotHeight >= botHeight && currSlabTopHeight <= topHeight) {
+				column.remove(mid); return;
+			}
+			
 			if(botHeight >= currSlabBotHeight) { //my new slab will overlap on the top of this slab, or fit entirely within.
 				long splitSlabBot = createSlab(getColor(currSlab), botHeight, currSlabBotHeight, getType(currSlab));
+				
 				if(topHeight <= currSlabTopHeight) { //my new slab will fit entirely within this slab.
 					long splitSlabTop = createSlab(getColor(currSlab), currSlabTopHeight, topHeight, getType(currSlab));
-
+					
 					//set the current slab to be the bottom, add in the next after it.
 					if(splitSlabBot != 0) column.set(mid, splitSlabBot); else column.remove(mid);
 					if(splitSlabTop != 0) column.add(mid + ((splitSlabBot != 0) ? 1 : 0), splitSlabTop);
@@ -117,18 +131,18 @@ public class RLEColumn {
 				}
 				else { //I want to change my current slab to be cut off by my new one, and search to find the one it overlaps with.
 					if(splitSlabBot != 0) column.set(mid, splitSlabBot); else {
-						column.remove(mid); mid--; top--;
+						column.remove(mid);
 					}
-					removeArea(botHeight, topHeight, mid, top);
+					removeArea(botHeight, topHeight, ++mid, top);
 					return;
 				}
 			}
-			else { //My new slab overlaps with this slab on the bottom edge.
+			else { //My new slab overlaps with this slab on the bottom.
 				long splitSlabTop = createSlab(getColor(currSlab), currSlabTopHeight, topHeight, getType(currSlab));
 				if(splitSlabTop != 0) column.set(mid, splitSlabTop); else {
-					column.remove(mid); mid--;
+					column.remove(mid);
 				}
-				removeArea(botHeight, topHeight, bot, mid);
+				if(mid < column.size() && getTopHeight(column.get(mid)) < topHeight) removeArea(botHeight, topHeight, bot, mid);
 				return;
 			}
 		}
@@ -143,7 +157,8 @@ public class RLEColumn {
 				else bot = mid;
 			}
 			else top = mid;
-			mid = bot + top / 2;
+			if(mid == (bot + top) / 2) return -1;
+			mid = (bot + top) / 2;
 		}
 		return -1;
 	}
@@ -172,7 +187,7 @@ public class RLEColumn {
 		//A slab is a 64 bit value, the first 24 bits being a color, followed by a material type,
 		//followed by two 16 bit values being the bottom and top heights of the slab.
 		
-		if(topHeight <= botHeight) return 0;
+		if(topHeight <= botHeight) return 0L;
 		
 		if(type > 255) type=0;
 		
@@ -191,8 +206,10 @@ public class RLEColumn {
 	public static void main(String[] args) {
 		RLEColumn column = new RLEColumn();
 		
-		column.setSlab(0, 20, 1000, 1);
-		column.setSlab(19, 21, 1000, 1);
+		column.setSlab(0, 1, 1000, 1);
+		column.setSlab(1, 50, 500, 1);
+		column.setSlab(50, 52, 1000, 1);
+		column.removeArea(48, 53);
 		
 		for(int i = 0; i < column.getColumnString().size(); i++) {
 			long slab = column.getColumnString().get(i);

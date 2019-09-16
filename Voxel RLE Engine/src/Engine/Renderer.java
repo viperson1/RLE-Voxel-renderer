@@ -40,7 +40,7 @@ public class Renderer {
 
     public void renderFrame(int frame) {
         glClearColor(0f, 1f, 1f, 0f);
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
         float recipScreenWidth = 2f / columns;
         float recipScreenHeight = 2f / rows;
@@ -49,7 +49,7 @@ public class Renderer {
         distFromLast.set(getDecimalPart(player.position.x), getDecimalPart(player.position.y));
         originSquare.set((int)(player.position.x), (int)(player.position.y));
 
-        for(int column = 0; column < columns; column++) {
+        for(int column = frame & 1; column < columns; column += 2) {
             float yBufferTop =  1f;
             float yBufferBot = -1f;
 
@@ -123,14 +123,14 @@ public class Renderer {
 
                         Color shadow = color.darker();
 
-                        if (botHeightOnScreen[0] < yBufferBot) {
-                            botHeightOnScreen[0] = yBufferBot;
-                            yBufferBot = topHeightOnScreen[1];
+                        if (botHeightOnScreen[1] <= yBufferBot) {
+                            botHeightOnScreen[1] = yBufferBot;
+                            yBufferBot = topHeightOnScreen[0];
                             maxZOnScreen = player.position.z + player.eyeHeight + ((((1 - yBufferBot * (rows)) + player.horizon) / heightScale) * renderDist);
                         }
-                        if (topHeightOnScreen[1] > yBufferTop) {
-                            topHeightOnScreen[1] = yBufferTop;
-                            yBufferTop = botHeightOnScreen[0];
+                        if (topHeightOnScreen[0] >= yBufferTop) {
+                            topHeightOnScreen[0] = yBufferTop;
+                            yBufferTop = botHeightOnScreen[1];
                             minZOnScreen = player.position.z + player.eyeHeight + ((((1 - yBufferTop * (rows)) + player.horizon) / heightScale) * renderDist);
                         }
                         if (yBufferBot == yBufferTop) break;
@@ -139,8 +139,8 @@ public class Renderer {
                         glBegin(GL_QUADS);
                             glColor3f(shadow.getRed() / 256f, shadow.getGreen() / 256f, shadow.getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint, topHeightOnScreen[1]);
-                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, topHeightOnScreen[1]);
-                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, botHeightOnScreen[1]);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth, topHeightOnScreen[1]);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth, botHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint, botHeightOnScreen[1]);
                         glEnd();
 
@@ -149,8 +149,8 @@ public class Renderer {
                         {
                             glColor3f(color.getRed() / 256f, color.getGreen() / 256f, color.getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint, topHeightOnScreen[0]);
-                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, topHeightOnScreen[0]);
-                            glVertex2f(horizontalScreenPoint + recipScreenWidth * 2, botHeightOnScreen[0]);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth, topHeightOnScreen[0]);
+                            glVertex2f(horizontalScreenPoint + recipScreenWidth, botHeightOnScreen[0]);
                             glVertex2f(horizontalScreenPoint, botHeightOnScreen[0]);
                         }
                         glEnd();
@@ -159,19 +159,14 @@ public class Renderer {
                     else currentSquare.y += stepDir.y;
                 } else inBounds = false;
             }
+            glBegin(GL_QUADS); {
+                glColor3f(0, 1, 1);
+                glVertex2f(horizontalScreenPoint, -1f);
+                glVertex2f(horizontalScreenPoint + recipScreenWidth, -1f);
+                glVertex2f(horizontalScreenPoint + recipScreenWidth, 1f);
+                glVertex2f(horizontalScreenPoint, 1f);
+            } glEnd();
         }
-        glBegin(GL_LINES);
-        glVertex2f(-1, player.horizon * recipScreenHeight);
-        glVertex2f(1, player.horizon * recipScreenHeight);
-        glEnd();
-
-        glBegin(GL_QUADS); {
-            glColor3f(0, 1, 1);
-            glVertex2f(-1, -1);
-            glVertex2f(-1, 1);
-            glVertex2f(1, 1);
-            glVertex2f(1, -1);
-        } glEnd();
     }
 
     private Vector3i currVoxel = new Vector3i();

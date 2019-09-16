@@ -57,9 +57,8 @@ public class Level {
 
                 for(int z = 1; z < map[0][0].length; z++) {
                     if(last != map[x][y][z]) {
-
                         if(last == true) {
-                            if(z > grassHeight) {
+                            if(z - switchHeight > grassHeight) {
                                 level[getIndex(x, y)].setSlab(switchHeight, z-grassHeight, stoneColor.getRGB(),  1);
                                 level[getIndex(x, y)].setSlab(z - grassHeight, z, grassColor.getRGB(), 1);
                             }
@@ -69,7 +68,6 @@ public class Level {
                     last = map[x][y][z];
                 }
                 level[getIndex(x, y)].setSlab(0, 1, Color.black.getRGB(), 1);
-            
             }
         }
     }

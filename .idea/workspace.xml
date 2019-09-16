@@ -47,10 +47,11 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jackson\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine\lib" />
       <recent name="C:\Users\jacks\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine" />
     </key>
   </component>
@@ -103,8 +104,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
-        <item itemvalue="Application.Generator" />
         <item itemvalue="Application.RLEColumn" />
+        <item itemvalue="Application.Generator" />
       </list>
     </recent_temporary>
   </component>
@@ -129,6 +130,7 @@
       <workItem from="1568290428011" duration="28944000" />
       <workItem from="1568420942317" duration="857000" />
       <workItem from="1568422303714" duration="19981000" />
+      <workItem from="1568516777106" duration="21371000" />
     </task>
     <servers />
   </component>
@@ -148,18 +150,10 @@
       </map>
     </option>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Voxel RLE Engine/src/Map/Generator.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$RLEColumn.ic" NAME="RLEColumn Coverage Results" MODIFIED="1568580175251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>Map.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$main.ic" NAME="main Coverage Results" MODIFIED="1568226525853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
