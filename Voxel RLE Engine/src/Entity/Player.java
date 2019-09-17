@@ -24,10 +24,10 @@ public class Player extends Entity {
     public void moveDirection(int dirID, double frameTime) {
         switch(dirID) {
             case 1: //forward
-                motion.set((float)-Math.sin(direction), (float)-Math.cos(direction), (((1) - horizon) / 180f));
+                motion.set((float)-Math.sin(direction), (float)-Math.cos(direction), (((1) - horizon) / 360f));
                 break;
             case 2: //back
-                motion.set((float)Math.sin(direction), (float)Math.cos(direction), -(((1) - horizon) / 180f));
+                motion.set((float)Math.sin(direction), (float)Math.cos(direction), -(((1) - horizon) / 360f));
                 break;
             case 3: //left
                 motion.set((float)-Math.cos(direction), (float)Math.sin(direction), 0);

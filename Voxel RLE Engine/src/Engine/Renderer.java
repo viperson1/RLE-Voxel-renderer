@@ -16,16 +16,18 @@ public class Renderer {
 
     int columns, rows;
     float FOV;
-    public final float heightScale = 180f;
-    private final float drawDist = 192f;
+    public final float heightScale;
+    private final float drawDist;
 
     public Renderer(Player player, Level level) {
         this.player = player;
         this.level = level;
-    
+   
         this.FOV = (float) Math.PI * 0.5f;
-        this.columns = 320;
-        this.rows = 180;
+        this.columns = 480;
+        this.rows = 360;
+        this.heightScale = 360f;
+        this.drawDist = 192f;
     }
 
     //supporting objects
@@ -49,7 +51,7 @@ public class Renderer {
         distFromLast.set(getDecimalPart(player.position.x), getDecimalPart(player.position.y));
         originSquare.set((int)(player.position.x), (int)(player.position.y));
 
-        for(int column = frame & 1; column < columns; column += 2) {
+        for(int column = frame & 0; column < columns; column += 1) {
             float yBufferTop =  1f;
             float yBufferBot = -1f;
 
@@ -140,6 +142,7 @@ public class Renderer {
                             glColor3f(shadow.getRed() / 256f, shadow.getGreen() / 256f, shadow.getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint, topHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, topHeightOnScreen[1]);
+                            glColor3f(shadow.darker().getRed() / 256f, shadow.darker().getGreen() / 256f, shadow.darker().getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, botHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint, botHeightOnScreen[1]);
                         glEnd();
@@ -160,9 +163,10 @@ public class Renderer {
                 } else inBounds = false;
             }
             glBegin(GL_QUADS); {
-                glColor3f(0, 1, 1);
+                glColor3f(0, .5f, 1);
                 glVertex2f(horizontalScreenPoint, -1f);
                 glVertex2f(horizontalScreenPoint + recipScreenWidth, -1f);
+                glColor3f(1f, 1f, 1f);
                 glVertex2f(horizontalScreenPoint + recipScreenWidth, 1f);
                 glVertex2f(horizontalScreenPoint, 1f);
             } glEnd();

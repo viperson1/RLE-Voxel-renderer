@@ -3,6 +3,7 @@ package Engine;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import Engine.Utilities.ShapeUtils;
 import Entity.Player;
 import Map.Level;
 import com.flowpowered.noise.module.source.Perlin;
@@ -23,6 +24,7 @@ public class Engine {
 	private Perlin noiseGen = new Perlin();
 	public double frameTime;
 	private double lastTime;
+	private ShapeUtils util;
     
     public Engine() {
         windowWidth = 960; windowHeight = 540;
@@ -30,14 +32,16 @@ public class Engine {
         player = new Player(new Vector3f(128, 128, 100), new Vector3i(1, 1, 2), 0, 2, this);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
+        util = new ShapeUtils();
+        util.initSphere(3);
         
         initializeWindow();
     }
 
-    public Player getPlayer()   { return player; }
-    public Level getLevel()     { return level;  }
-    public long getWindow()     { return window; }
-    public Renderer getRenderer(){return renderer; }
+    public Player getPlayer()   { return this.player; }
+    public Level getLevel()     { return this.level;  }
+    public long getWindow()     { return this.window; }
+    public Renderer getRenderer(){ return this.renderer; }
 
     void initializeWindow() {
         if(!glfwInit()) {
@@ -128,10 +132,10 @@ public class Engine {
         if(glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS || glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
             Vector3i rayHit = renderer.screenRayCast(64, player.direction, 0);
             if(rayHit != null) {
-                for (int x = rayHit.x - 2; x < rayHit.x + 3; x++) {
-                    for (int y = rayHit.y - 2; y < rayHit.y + 3; y++) {
+                for (int x = rayHit.x - 3; x < rayHit.x + 4; x++) {
+                    for (int y = rayHit.y - 3; y < rayHit.y + 4; y++) {
                         if(x < level.getWidth() && x >= 0 && y < level.getHeight() && y >= 0)
-                            level.getLevelArray()[level.getIndex(x, y)].removeArea(rayHit.z - 2, rayHit.z + 3);
+                            level.getLevelArray()[level.getIndex(x, y)].removeArea(rayHit.z - 3, rayHit.z + 4);
                     }
                 }
             }
