@@ -14,27 +14,25 @@ public class Generator {
 		final Perlin noise = new Perlin();
 		noise.setSeed((int)(Math.random() * 100000));
 
-		float vScale = 10;
+		float vScale = 8;
 
-		Vector3f[][][] vPointArr = new Vector3f[(int)Math.ceil(width / vScale)][(int)Math.ceil(length / vScale)][(int)Math.ceil(length / vScale)];
+		Vector3f[][][] vPointArr = new Vector3f[(int)Math.ceil(width / vScale)][(int)Math.ceil(length / vScale)][(int)Math.ceil(height / vScale)];
 
 		boolean[][][] map = new boolean[width][length][height];
-
-		Random rand = new Random();
 
 		float time = System.nanoTime() / 1000000000f;
 		for(int x = 0; x < width; x++)
 			for(int y = 0; y < length; y++)
 				for(int z = 0; z < height; z++) {
-					double noiseVal = Math.abs(noise.getValue(x * 0.001f, y * 0.001f, 100.65)) * 96;
-					boolean voxOn = ((z - 64) + noise.getValue(x * 0.01f, y * 0.01f, z * 0.005f) * 64)  - (getVoronoi(new Vector3f(x, y, z), 8, rand, vPointArr) * 4f * z / height) < noiseVal;
+					double noiseVal = Math.abs(noise.getValue(x * 0.0001f, y * 0.0001f, 100.65)) * 96;
+					boolean voxOn = ((z - 64) + noise.getValue(x * 0.01f, y * 0.01f, z * 0.005f) * 64)  - ((getVoronoi(new Vector3f(x, y, z), vScale, vPointArr) * vScale * .5f) * z / height) < noiseVal;
 					map[x][y][z] = voxOn;
 				}
 		System.out.println((System.nanoTime() / 1000000000f) - time);
 		return map;
 	}
 
-	static float getVoronoi(Vector3f coord, float scale, Random rand, Vector3f[][][] vPointArr) {
+	static float getVoronoi(Vector3f coord, float scale, Vector3f[][][] vPointArr) {
 		Vector3f randPoint = new Vector3f();
 		Vector3i scaledPoint = new Vector3i((int)(coord.x / scale), (int)(coord.y / scale), (int)(coord.z / scale));
 		float minDist = Float.MAX_VALUE;

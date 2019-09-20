@@ -181,6 +181,55 @@ public class RLEColumn {
         else return mid - 1;
 	}
 
+	public byte getIntersections(float botHeight, float topHeight, float kneeHeight) {
+		return getIntersections(botHeight, topHeight, kneeHeight, 0, column.size());
+	}
+
+	//returns a byte where the first 2 bits are dedicated to an intersection type, 0 being none, 1 being below kneeHeight, (other six bits are dedicated to height above botHeight)
+	// and 2 being above kneeHeight / wall
+	private byte getIntersections(float botHeight, float topHeight, float kneeHeight, int bot, int top) {
+		if(column.size() == 0) return 0;
+		if(botHeight > topHeight) return 0;
+		if(top > column.size()) top = column.size();
+
+		int mid = (top + bot) / 2;
+
+		while(mid < top) {
+			if(botHeight >= getTopHeight(column.get(mid))) {
+				bot = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; continue;
+			}
+			else if(topHeight <= getBotHeight(column.get(mid))) {
+				top = mid;
+				if(mid == (top + bot) / 2) break;
+				mid = (top + bot) / 2; continue;
+			}
+
+			long currSlab = column.get(mid);
+
+			//due to the binary search, I know that I have found a slab that will overlap with my new slab.
+			int currSlabTopHeight = getTopHeight(currSlab);
+			int currSlabBotHeight = getBotHeight(currSlab);
+
+			if(botHeight >= currSlabBotHeight) { //my new slab will overlap on the top of this slab, or fit entirely within.
+				if(topHeight <= currSlabTopHeight) { //my area will fit entirely within this slab.
+					return 2;
+				}
+				else { //my area is above the area but may intersect below kneeheight;
+					if(currSlabTopHeight - botHeight < kneeHeight) {
+						return (byte)(1 | ((currSlabTopHeight - (int)botHeight) << 2));
+					}
+					else return 2;
+				}
+			}
+			else { //My area overlaps with this slab on the bottom.
+				return 2;
+			}
+		}
+		return 0;
+	}
+
 	public static long createSlab(int color, int topHeight, int botHeight, int type) {
 		//A slab is a 64 bit value, the first 24 bits being a color, followed by a material type,
 		//followed by two 16 bit values being the bottom and top heights of the slab.
@@ -215,5 +264,6 @@ public class RLEColumn {
 			Color color = new Color(getColor(slab));
 			System.out.println(color.getRed()+ ", " +color.getGreen()+ ", " +color.getBlue());
 		}
+		System.out.println((column.getIntersections(15, 23, 4) & 3) + " " + ((column.getIntersections(15, 23, 4) >> 2) & 63));
 	}
 }

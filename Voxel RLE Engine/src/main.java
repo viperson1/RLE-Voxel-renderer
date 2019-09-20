@@ -10,7 +10,7 @@ public class main {
         double time = System.nanoTime();
         while(!glfwWindowShouldClose(engine.getWindow())) {
             engine.update();
-            glfwSetWindowTitle(engine.getWindow(), "" + 1 / engine.frameTime);
+            glfwSetWindowTitle(engine.getWindow(), "" + engine.getPlayer().position.z);
             glFlush();
         }
         glfwTerminate();

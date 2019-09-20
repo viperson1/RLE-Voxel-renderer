@@ -29,7 +29,7 @@ public class Engine {
     public Engine() {
         windowWidth = 960; windowHeight = 540;
         level = new Level(512, 512);
-        player = new Player(new Vector3f(128, 128, 100), new Vector3i(1, 1, 2), 0, 2, this);
+        player = new Player(new Vector3f(128, 128, 100), new Vector3i(2, 2, 4), 2, 0, 3, this);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
         util = new ShapeUtils();
@@ -115,9 +115,9 @@ public class Engine {
 			if(player.horizon < renderer.rows / -2) player.horizon = renderer.rows / -2;
 		}
 		if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-			player.position.z += frameTime * player.moveSpeed;
+			player.motion.z += frameTime * player.moveSpeed;
 		if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-			player.position.z -= frameTime * player.moveSpeed;
+			player.motion.z -= frameTime * player.moveSpeed;
 		if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		    Vector3i rayHit = renderer.screenRayCast(64, player.direction, 0);
 		    if(rayHit != null) {
@@ -140,5 +140,8 @@ public class Engine {
                 }
             }
         }
+
+        //player.motion.z -= 9.8f * frameTime;
+        player.applyMotion(this.level);
     }
 }

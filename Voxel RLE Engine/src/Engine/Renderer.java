@@ -23,8 +23,8 @@ public class Renderer {
         this.player = player;
         this.level = level;
    
-        this.FOV = (float) Math.PI * 0.5f;
-        this.columns = 480;
+        this.FOV = (float)Math.PI * .5f;
+        this.columns = 160;
         this.rows = 360;
         this.heightScale = 360f;
         this.drawDist = 192f;
@@ -142,7 +142,7 @@ public class Renderer {
                             glColor3f(shadow.getRed() / 256f, shadow.getGreen() / 256f, shadow.getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint, topHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, topHeightOnScreen[1]);
-                            glColor3f(shadow.darker().getRed() / 256f, shadow.darker().getGreen() / 256f, shadow.darker().getBlue() / 256f);
+                            //glColor3f(shadow.darker().getRed() / 256f, shadow.darker().getGreen() / 256f, shadow.darker().getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, botHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint, botHeightOnScreen[1]);
                         glEnd();
