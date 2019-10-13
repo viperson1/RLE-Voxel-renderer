@@ -2,6 +2,7 @@ package Engine;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import Engine.Engine;
 import Entity.Player;
 import Map.Level;
 import Map.RLEColumn;
@@ -15,7 +16,7 @@ public class Renderer {
     Level level;
 
     int columns, rows;
-    float FOV;
+    public float FOV;
     public final float heightScale;
     private final float drawDist;
 
@@ -23,7 +24,7 @@ public class Renderer {
         this.player = player;
         this.level = level;
    
-        this.FOV = (float)Math.PI * .5f;
+        this.FOV = (float)Math.toRadians(80);
         this.columns = 160;
         this.rows = 360;
         this.heightScale = 360f;
@@ -100,7 +101,7 @@ public class Renderer {
                 float minZOnScreen = player.position.z + player.eyeHeight + ((((1 + yBufferBot * (rows * .5f)) - player.horizon) / heightScale) * renderDist);
 
                 if (currentSquare.x >= 0 && currentSquare.x < level.getWidth() && currentSquare.y >= 0 && currentSquare.y < level.getHeight()) {
-                    RLEColumn slabColumn = level.getLevelArray()[level.getIndex(currentSquare.x, currentSquare.y)];
+                    RLEColumn slabColumn = level.getColumn(currentSquare.x, currentSquare.y);
 
                     int minIndex = slabColumn.getSlabIndex(minZOnScreen);
                     int maxIndex = slabColumn.getSlabIndex(maxZOnScreen);
@@ -142,7 +143,7 @@ public class Renderer {
                             glColor3f(shadow.getRed() / 256f, shadow.getGreen() / 256f, shadow.getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint, topHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, topHeightOnScreen[1]);
-                            //glColor3f(shadow.darker().getRed() / 256f, shadow.darker().getGreen() / 256f, shadow.darker().getBlue() / 256f);
+                            glColor3f(shadow.darker().getRed() / 256f, shadow.darker().getGreen() / 256f, shadow.darker().getBlue() / 256f);
                             glVertex2f(horizontalScreenPoint + recipScreenWidth, botHeightOnScreen[1]);
                             glVertex2f(horizontalScreenPoint, botHeightOnScreen[1]);
                         glEnd();
@@ -179,6 +180,9 @@ public class Renderer {
     private Vector3f tDelta3D = new Vector3f();
     private Vector3f tMax3D = new Vector3f();
 
+    public void RenderParticles() {
+
+    }
 
     public Vector3i screenRayCast(float distLimit, double rayDeg, float heightOnScreen) {
         rayCastDir.set((float)-Math.sin(rayDeg), (float)-Math.cos(rayDeg), (((1 + heightOnScreen * (rows * .5f)) - player.horizon) / heightScale));

@@ -1,18 +1,16 @@
 package Engine;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-
-import Engine.Utilities.ShapeUtils;
 import Entity.Player;
 import Map.Level;
-import com.flowpowered.noise.module.source.Perlin;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
 import java.awt.*;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 
 public class Engine {
@@ -21,19 +19,15 @@ public class Engine {
     private long window;
     private final int windowWidth, windowHeight;
     private Renderer renderer;
-	private Perlin noiseGen = new Perlin();
 	public double frameTime;
 	private double lastTime;
-	private ShapeUtils util;
     
     public Engine() {
         windowWidth = 960; windowHeight = 540;
-        level = new Level(512, 512);
-        player = new Player(new Vector3f(128, 128, 100), new Vector3i(2, 2, 4), 2, 0, 3, this);
+        level = new Level(1024, 1024);
+        player = new Player(new Vector3f(128, 128, 256), new Vector3i(2, 2, 8), 2, 0, 7, this, level);
         renderer = new Renderer(player, level);
         lastTime = System.nanoTime();
-        util = new ShapeUtils();
-        util.initSphere(3);
         
         initializeWindow();
     }
@@ -135,13 +129,14 @@ public class Engine {
                 for (int x = rayHit.x - 3; x < rayHit.x + 4; x++) {
                     for (int y = rayHit.y - 3; y < rayHit.y + 4; y++) {
                         if(x < level.getWidth() && x >= 0 && y < level.getHeight() && y >= 0)
-                            level.getLevelArray()[level.getIndex(x, y)].removeArea(rayHit.z - 3, rayHit.z + 4);
+                            level.getLevelArray()[level.getIndex(x, y)].removeArea(rayHit.z - 8, rayHit.z + 8);
                     }
                 }
             }
         }
 
-        //player.motion.z -= 9.8f * frameTime;
-        player.applyMotion(this.level);
+        if(!player.isOnGround()) player.motion.z -= (player.boundingBox.z / 2f) * 9.8f * frameTime;
+        if(player.motion.z < -60) player.motion.z = -60;
+        player.applyMotion();
     }
 }

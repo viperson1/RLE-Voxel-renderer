@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jocl-2.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Voxel RLE Engine/lib/jocl-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

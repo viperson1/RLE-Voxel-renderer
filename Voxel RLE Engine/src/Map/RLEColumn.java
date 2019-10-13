@@ -217,7 +217,7 @@ public class RLEColumn {
 					return 2;
 				}
 				else { //my area is above the area but may intersect below kneeheight;
-					if(currSlabTopHeight - botHeight < kneeHeight) {
+					if(currSlabTopHeight - (int)botHeight < kneeHeight) {
 						return (byte)(1 | ((currSlabTopHeight - (int)botHeight) << 2));
 					}
 					else return 2;

@@ -29,7 +29,7 @@ public class Level {
                 if(cloudVal > 5) level[getIndex(x,y)].setSlab(150 - cloudVal, 150 + cloudVal, col.getRGB(), 1);
             }
         }*/
-        read3DArray(Generator.GenerateStackedPerlin(width, height, 256));
+        read3DArray(Generator.GenerateStackedPerlin(width / 4, height / 4, 256, 4, 4, 2));
     }
 
     public void read3DArray(boolean[][][] map) {
@@ -70,6 +70,10 @@ public class Level {
                 level[getIndex(x, y)].setSlab(0, 1, Color.black.getRGB(), 1);
             }
         }
+    }
+
+    public RLEColumn getColumn(int x, int y) {
+        return level[(y * width) + x];
     }
 
     public int getIndex(int x, int y) { return (y * width) + x; };

@@ -2,13 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26e86c78-4a8f-447b-abd4-53046854eec4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jocl_2_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/GPUCompute/CLRenderManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/GPUCompute/Kernels/render.cl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Visuals/Particle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Chunk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/Voxel RLE Engine.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/Voxel RLE Engine.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/bin/Shaders/ComputeShaders/RenderShaders/RLERender.glsl" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Engine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Engine/Utilities/ShapeUtils.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Entity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Entity/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Generator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/Level.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/RLEColumn.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/Map/RLEColumn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Shaders/ComputeShaders/RenderShaders/RLERender.glsl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/Shaders/ComputeShaders/RenderShaders/RenderShader.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Voxel RLE Engine/src/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Voxel RLE Engine/src/main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,14 +47,17 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Voxel-Space-Renderer/VoxelSpaceEngine" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/VaultDoor3.java" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jacks\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine\lib" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jacks\Documents\GitHub\RLE-Voxel-renderer\Voxel RLE Engine" />
     </key>
@@ -61,6 +75,19 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.main">
+    <configuration name="CLRenderManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Engine.GPUCompute.CLRenderManager" />
+      <module name="Voxel RLE Engine" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Engine.GPUCompute.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Generator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Map.Generator" />
       <module name="Voxel RLE Engine" />
@@ -87,6 +114,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VaultDoor1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="VaultDoor1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main" />
       <module name="Voxel RLE Engine" />
@@ -97,6 +130,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.main" />
+        <item itemvalue="Application.VaultDoor1" />
+        <item itemvalue="Application.CLRenderManager" />
         <item itemvalue="Application.RLEColumn" />
         <item itemvalue="Application.Generator" />
       </list>
@@ -125,7 +160,12 @@
       <workItem from="1568422303714" duration="28576000" />
       <workItem from="1568774185702" duration="5406000" />
       <workItem from="1568830917878" duration="14119000" />
-      <workItem from="1568945031217" duration="1864000" />
+      <workItem from="1568945031217" duration="18965000" />
+      <workItem from="1569243591252" duration="8869000" />
+      <workItem from="1569963307427" duration="77000" />
+      <workItem from="1570330511460" duration="1343000" />
+      <workItem from="1570452904221" duration="15073000" />
+      <workItem from="1570950241870" duration="753000" />
     </task>
     <servers />
   </component>
@@ -145,7 +185,21 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$USER_HOME$/Downloads/VaultDoor3.java</url>
+          <line>3</line>
+          <properties class="VaultDoor3" method="main">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$main.ic" NAME="main Coverage Results" MODIFIED="1568226525853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/RLE_Voxel_renderer$main.ic" NAME="main Coverage Results" MODIFIED="1570722315594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
